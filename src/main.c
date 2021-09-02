@@ -137,7 +137,8 @@ int main() {
     comp.mailboxes[99] = 10;
 
     for(int i = 0; i < 100; ++i) {
-        printf("%s\n", opcodeToString(decodeMailboxValue(comp.mailboxes[i]).op));
+        Instruction_t ins = decodeMailboxValue(comp.mailboxes[i]);
+        printf("%s, %d (%d)\n", opcodeToString(ins.op), ins.value, comp.mailboxes[i]);
     }
 
     executeLMC(&comp);
