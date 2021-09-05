@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "lmc.h"
-
+#include "misc.h"
 struct LMC
 initLMC() {
 	struct LMC c = {.accumulator = 0, .outbox = 0, .pc = 0, .negative = false};

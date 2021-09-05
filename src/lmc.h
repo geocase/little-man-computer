@@ -1,5 +1,5 @@
-#ifndef LMC_H
-#define LMC_H
+#ifndef LMC_LMC_H
+#define LMC_LMC_H
 
 #include <stdbool.h>
 #include <stdint.h>

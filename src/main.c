@@ -4,16 +4,6 @@
 
 #include "lmc.h"
 
-uint8_t getFirstDigitOfThreeDigitNumber(uint16_t num);
-
-uint8_t
-getFirstDigitOfThreeDigitNumber(uint16_t num) {
-	if(num < 100) {
-		return 0;
-	}
-	return num / 100;
-}
-
 uint16_t*
 loadProgramFromFile(const char* path) {
 	uint16_t mail[100];
