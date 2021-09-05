@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 struct LMC {
     uint16_t mailboxes[100];
@@ -163,18 +164,19 @@ bool stepLMC(struct LMC* comp) {
     return false;
 }
 
+uint16_t* loadProgramFromFile(const char* path) {
+    uint16_t mail[100];
+    FILE* f = fopen(path, "rb");
+    rewind(f);
+    fread(mail, sizeof(uint16_t), 100, f);
+    return mail;
+}
+
 int main() {
     struct LMC comp = lmcInit();
 
-    comp.mailboxes[0] = numericCode(LDA, 98);
-    comp.mailboxes[1] = numericCode(SUB, 99);
-    comp.mailboxes[2] = numericCode(OUT, 00);
-    comp.mailboxes[3] = numericCode(BRZ, 5);
-    comp.mailboxes[4] = numericCode(BRA, 1);
-    comp.mailboxes[5] = numericCode(HLT, 0);
-
-    comp.mailboxes[98] = 10;
-    comp.mailboxes[99] = 1;
+    uint16_t* buffer = loadProgramFromFile("countdown.lma");
+    memcpy(comp.mailboxes, buffer, sizeof(uint16_t) * 100);
 
     for(int i = 0; i < 100; ++i) {
         Instruction_t ins = decodeMailboxValue(comp.mailboxes[i]);
