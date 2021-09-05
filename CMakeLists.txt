@@ -4,7 +4,7 @@ set(EXE_NAME lmc)
 
 include_directories(src)
 
-set(SOURCES src/main.c src/lmc.c src/misc.c)
+set(SOURCES src/main.c src/lmc.c src/misc.c src/lex.c)
 add_executable(${EXE_NAME} ${SOURCES} )
 set_property(TARGET ${EXE_NAME} PROPERTY C_STANDARD 11)
 
