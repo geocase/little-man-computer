@@ -16,7 +16,7 @@ loadProgramFromFile(const char* path) {
 
 int
 main() {
-	StringBuffer_t prog = readFileToStringBuffer("test.lma");
+	StringBuffer_t prog = readFileToStringBuffer("countdown.lma");
 	uint16_t* k         = lexStringBuffer(&prog);
 	free(prog.data);
 

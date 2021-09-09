@@ -1,0 +1,7 @@
+    LDA 5
+	SUB 6
+	OUT 0
+	BRZ 5
+	BRA 1
+	DAT 11
+	DAT 1
