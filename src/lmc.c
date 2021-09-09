@@ -101,8 +101,10 @@ opcodeToString(opcode_t op) {
 		case OUT:
 			return "OUT";
 		default:
-			printf("err: %d\n", op);
-			exit(-1);
+			return "";
+			break;
+//			printf("err: %d\n", op);
+//			exit(-1);
 	}
 }
 

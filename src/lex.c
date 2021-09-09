@@ -62,7 +62,7 @@ stringBufferNew() {
 
 void
 stringBufferAppend(StringBuffer_t* buffer, char c) {
-	buffer->data = realloc(buffer->data, sizeof(char) * (buffer->size + 1));
+	buffer->data = realloc(buffer->data, sizeof(char) * (buffer->size + 2));
 	buffer->data[buffer->size] = c;
 	buffer->size += 1;
 	buffer->data[buffer->size] = '\0';
@@ -144,8 +144,9 @@ stringBufferToToken(StringBuffer_t* buffer) {
 	return t;
 }
 
-Instruction_t*
+uint16_t*
 lexStringBuffer(StringBuffer_t* buffer) {
+	// todo: cleanup
 	StringBuffer_t token_buffer[300];
 	uint16_t token_buffer_index = 0;
 	bool in_word                = false;
@@ -172,11 +173,27 @@ lexStringBuffer(StringBuffer_t* buffer) {
 	//	printf("%s\n", buffer->data);
 	//	printf("%zd\n", getLineCountFromStringBuffer(buffer));
 	token_buffer_index++;
+	token_t* tokens = malloc(sizeof(token_t) * token_buffer_index);
 	for(int i = 0; i < token_buffer_index; ++i) {
 		printf("(%s) ", token_buffer[i].data);
-		token_t k = stringBufferToToken(&(token_buffer[i]));
-		printf("[%d] ", k.value);
+		tokens[i] = stringBufferToToken(&(token_buffer[i]));
+		printf("[%d] ", tokens[i].value);
 	}
+	uint16_t* codes = malloc(sizeof(uint16_t) * 100);
+	for(int i = 0; i < 100; ++i) {
+		codes[i] = 0;
+	}
+
+	int index = 0;
+	for(int k = 0; k < token_buffer_index; k += 2) {
+		codes[index] = numericCode(tokens[k].value, tokens[k + 1].value);
+		if(tokens[k].value == 1001) {
+			codes[index] = tokens[k + 1].value;
+		}
+		index += 1;
+	}
+
+	return codes;
 }
 
 size_t

@@ -37,6 +37,6 @@ typedef struct {
 	uint8_t value;
 } Statement_t;
 
-Instruction_t* lexStringBuffer(StringBuffer_t* buffer);
+uint16_t* lexStringBuffer(StringBuffer_t* buffer);
 size_t getLineCountFromStringBuffer(StringBuffer_t* buffer);
 #endif
