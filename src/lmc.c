@@ -103,8 +103,8 @@ opcodeToString(opcode_t op) {
 		default:
 			return "";
 			break;
-//			printf("err: %d\n", op);
-//			exit(-1);
+			//			printf("err: %d\n", op);
+			//			exit(-1);
 	}
 }
 

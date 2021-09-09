@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "lex.h"
+#include "stringbuffer.h"
 
 char_type_t
 getCharTypeOfChar(char c) {
@@ -52,49 +53,7 @@ getCharTypeOfChar(char c) {
 	return OTHER;
 }
 
-StringBuffer_t
-stringBufferNew() {
-	StringBuffer_t sb;
-	sb.data = NULL;
-	sb.size = 0;
-	return sb;
-}
 
-void
-stringBufferAppend(StringBuffer_t* buffer, char c) {
-	buffer->data = realloc(buffer->data, sizeof(char) * (buffer->size + 2));
-	buffer->data[buffer->size] = c;
-	buffer->size += 1;
-	buffer->data[buffer->size] = '\0';
-}
-
-StringBuffer_t
-readFileToStringBuffer(const char* path) {
-	size_t file_size;
-	StringBuffer_t buffer = stringBufferNew();
-	FILE* f               = fopen(path, "rb");
-	fseek(f, 0, SEEK_END);
-	file_size   = ftell(f);
-	buffer.data = malloc(file_size + 1);
-	rewind(f);
-	fread(buffer.data, sizeof(char), file_size, f);
-	buffer.data[file_size] = '\0';
-	fclose(f);
-
-	buffer.size = file_size;
-
-	return buffer;
-}
-
-void stringBufferSet(StringBuffer_t* buff, const char* str) {
-	if(buff->data != NULL) {
-		free(buff->data);
-	}
-	buff->size = strlen(str) + 1;
-	buff->data = malloc(sizeof(char) * buff->size);
-	memcpy(buff->data, str, buff->size);
-	buff->data[buff->size] = '\0';
-}
 
 token_t
 stringBufferToToken(StringBuffer_t* buffer) {
@@ -119,16 +78,15 @@ stringBufferToToken(StringBuffer_t* buffer) {
 	stringBufferSet(&(op_strings[10]), "DAT");
 
 	opcode_t op_values[11] = {
-	    HLT, ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, DAT
-	};
+	    HLT, ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, DAT};
 
 	switch(getCharTypeOfChar(buffer->data[0])) {
 		case NUMERA:
-			t.type = VALUE;
+			t.type  = VALUE;
 			t.value = atoi(buffer->data);
 			break;
 		case ALPHA:
-			t.type = OPERATOR;
+			t.type   = OPERATOR;
 			int iter = 0;
 			while(iter < 11) {
 				if(strcmp(buffer->data, op_strings[iter].data) == 0) {

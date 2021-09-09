@@ -1,29 +1,12 @@
 #ifndef LMC_LEX_H
 #define LMC_LEX_H
 
+#include "stringbuffer.h"
 #include "lmc.h"
 
-typedef struct {
-	size_t size;
-	char* data;
-} StringBuffer_t;
+typedef enum { NUMERA, ALPHA, OTHER } char_type_t;
 
-StringBuffer_t stringBufferNew();
-void stringBufferAppend(StringBuffer_t* buffer, char c);
-StringBuffer_t readFileToStringBuffer(const char* path);
-void stringBufferSet(StringBuffer_t* buff, const char* str);
-
-typedef enum {
-	NUMERA,
-	ALPHA,
-	OTHER
-} char_type_t;
-
-typedef enum {
-	OPERATOR,
-	VALUE,
-	LABEL
-} token_type_t;
+typedef enum { OPERATOR, VALUE, LABEL } token_type_t;
 
 typedef struct {
 	token_type_t type;
