@@ -53,8 +53,6 @@ getCharTypeOfChar(char c) {
 	return OTHER;
 }
 
-
-
 token_t
 stringBufferToToken(StringBuffer_t* buffer) {
 	token_t t;

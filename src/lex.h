@@ -1,8 +1,8 @@
 #ifndef LMC_LEX_H
 #define LMC_LEX_H
 
-#include "stringbuffer.h"
 #include "lmc.h"
+#include "stringbuffer.h"
 
 typedef enum { NUMERA, ALPHA, OTHER } char_type_t;
 
