@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "lex.h"
 
@@ -51,7 +52,8 @@ getCharTypeOfChar(char c) {
 	return OTHER;
 }
 
-StringBuffer_t stringBufferNew() {
+StringBuffer_t
+stringBufferNew() {
 	StringBuffer_t sb;
 	sb.data = NULL;
 	sb.size = 0;
@@ -70,7 +72,7 @@ StringBuffer_t
 readFileToStringBuffer(const char* path) {
 	size_t file_size;
 	StringBuffer_t buffer = stringBufferNew();
-	FILE* f = fopen(path, "rb");
+	FILE* f               = fopen(path, "rb");
 	fseek(f, 0, SEEK_END);
 	file_size   = ftell(f);
 	buffer.data = malloc(file_size + 1);
@@ -84,11 +86,68 @@ readFileToStringBuffer(const char* path) {
 	return buffer;
 }
 
+void stringBufferSet(StringBuffer_t* buff, const char* str) {
+	if(buff->data != NULL) {
+		free(buff->data);
+	}
+	buff->size = strlen(str) + 1;
+	buff->data = malloc(sizeof(char) * buff->size);
+	memcpy(buff->data, str, buff->size);
+	buff->data[buff->size] = '\0';
+}
+
+token_t
+stringBufferToToken(StringBuffer_t* buffer) {
+	token_t t;
+	if(buffer->size <= 0) {
+		exit(-1);
+	}
+	StringBuffer_t op_strings[10];
+	for(int i = 0; i < 10; ++i) {
+		op_strings[i] = stringBufferNew();
+	}
+	stringBufferSet(&(op_strings[0]), "HLT");
+	stringBufferSet(&(op_strings[1]), "ADD");
+	stringBufferSet(&(op_strings[2]), "SUB");
+	stringBufferSet(&(op_strings[3]), "STA");
+	stringBufferSet(&(op_strings[4]), "LDA");
+	stringBufferSet(&(op_strings[5]), "BRA");
+	stringBufferSet(&(op_strings[6]), "BRZ");
+	stringBufferSet(&(op_strings[7]), "BRP");
+	stringBufferSet(&(op_strings[8]), "INP");
+	stringBufferSet(&(op_strings[9]), "OUT");
+
+	opcode_t op_values[10] = {
+	    HLT, ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT
+	};
+
+	switch(getCharTypeOfChar(buffer->data[0])) {
+		case NUMERA:
+			t.type = VALUE;
+			t.value = atoi(buffer->data);
+			break;
+		case ALPHA:
+			t.type = OPERATOR;
+			int iter = 0;
+			while(iter < 10) {
+				if(strcmp(buffer->data, op_strings[iter].data) == 0) {
+					t.value = op_values[iter];
+					break;
+				}
+				iter++;
+			};
+			break;
+		case OTHER:
+			exit(-1);
+	}
+	return t;
+}
+
 Statement_t*
 lexStringBuffer(StringBuffer_t* buffer) {
 	StringBuffer_t token_buffer[300];
 	uint16_t token_buffer_index = 0;
-	bool in_word = false;
+	bool in_word                = false;
 	for(uint16_t bi = 0; bi < 300; ++bi) {
 		token_buffer[bi] = stringBufferNew();
 	}
@@ -114,6 +173,8 @@ lexStringBuffer(StringBuffer_t* buffer) {
 	token_buffer_index++;
 	for(int i = 0; i < token_buffer_index; ++i) {
 		printf("(%s) ", token_buffer[i].data);
+		token_t k = stringBufferToToken(&(token_buffer[i]));
+		printf("[%d] ", k.value);
 	}
 }
 
