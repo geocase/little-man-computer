@@ -102,8 +102,8 @@ stringBufferToToken(StringBuffer_t* buffer) {
 	if(buffer->size <= 0) {
 		exit(-1);
 	}
-	StringBuffer_t op_strings[10];
-	for(int i = 0; i < 10; ++i) {
+	StringBuffer_t op_strings[11];
+	for(int i = 0; i < 11; ++i) {
 		op_strings[i] = stringBufferNew();
 	}
 	stringBufferSet(&(op_strings[0]), "HLT");
@@ -116,9 +116,10 @@ stringBufferToToken(StringBuffer_t* buffer) {
 	stringBufferSet(&(op_strings[7]), "BRP");
 	stringBufferSet(&(op_strings[8]), "INP");
 	stringBufferSet(&(op_strings[9]), "OUT");
+	stringBufferSet(&(op_strings[10]), "DAT");
 
-	opcode_t op_values[10] = {
-	    HLT, ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT
+	opcode_t op_values[11] = {
+	    HLT, ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, DAT
 	};
 
 	switch(getCharTypeOfChar(buffer->data[0])) {
@@ -129,7 +130,7 @@ stringBufferToToken(StringBuffer_t* buffer) {
 		case ALPHA:
 			t.type = OPERATOR;
 			int iter = 0;
-			while(iter < 10) {
+			while(iter < 11) {
 				if(strcmp(buffer->data, op_strings[iter].data) == 0) {
 					t.value = op_values[iter];
 					break;
@@ -143,7 +144,7 @@ stringBufferToToken(StringBuffer_t* buffer) {
 	return t;
 }
 
-Statement_t*
+Instruction_t*
 lexStringBuffer(StringBuffer_t* buffer) {
 	StringBuffer_t token_buffer[300];
 	uint16_t token_buffer_index = 0;

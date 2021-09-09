@@ -26,7 +26,8 @@ typedef enum {
 	BRZ = 700,
 	BRP = 800,
 	INP = 901,
-	OUT = 902
+	OUT = 902,
+	DAT = 1001
 } opcode_t;
 
 char* opcodeToString(opcode_t op);
