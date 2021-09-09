@@ -170,8 +170,7 @@ lexStringBuffer(StringBuffer_t* buffer) {
 			in_word = true;
 		}
 	}
-	//	printf("%s\n", buffer->data);
-	//	printf("%zd\n", getLineCountFromStringBuffer(buffer));
+
 	token_buffer_index++;
 	token_t* tokens = malloc(sizeof(token_t) * token_buffer_index);
 	for(int i = 0; i < token_buffer_index; ++i) {

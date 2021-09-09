@@ -16,16 +16,22 @@ loadProgramFromFile(const char* path) {
 
 int
 main() {
-
-
 	StringBuffer_t prog = readFileToStringBuffer("test.lma");
 	uint16_t* k = lexStringBuffer(&prog);
 	free(prog.data);
 
+	FILE* f = fopen("countdown_from_asm.lmp", "wb");
+	fwrite(k, sizeof(uint16_t), 100, f);
+	fclose(f);
+
 	struct LMC comp = initLMC();
 
 //	uint16_t* buffer = loadProgramFromFile("countdown.lmp");
-	memcpy(comp.mailboxes, k, sizeof(uint16_t) * 100);
+//	memcpy(comp.mailboxes, k, sizeof(uint16_t) * 100);
+
+//	comp.mailboxes = loadProgramFromFile("countdown.lmp");
+	memcpy(comp.mailboxes, loadProgramFromFile("countdown_from_asm.lmp"), sizeof(uint16_t) * 100);
+
 	printf("\n");
 	for(int i = 0; i < 100; ++i) {
 		Instruction_t ins = decodeMailboxValue(comp.mailboxes[i]);
@@ -37,4 +43,7 @@ main() {
 	}
 
 	while(comp.pc < 100 && !(stepLMC(&comp))) {}
+
+
+
 }
