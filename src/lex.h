@@ -8,6 +8,17 @@ typedef struct {
 	char* data;
 } StringBuffer_t;
 
+StringBuffer_t stringBufferNew();
+void stringBufferAppend(StringBuffer_t* buffer, char c);
+StringBuffer_t readFileToStringBuffer(const char* path);
+
+
+typedef enum {
+	NUMERA,
+	ALPHA,
+	OTHER
+} char_type_t;
+
 typedef enum {
 	OPERATOR,
 	VALUE,
@@ -19,7 +30,6 @@ typedef struct {
 	uint8_t value;
 } Statement_t;
 
-StringBuffer_t readFileToStringBuffer(const char* path);
 Statement_t* lexStringBuffer(StringBuffer_t* buffer);
 size_t getLineCountFromStringBuffer(StringBuffer_t* buffer);
 #endif
