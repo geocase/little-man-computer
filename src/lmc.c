@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "lmc.h"
 #include "misc.h"
@@ -58,9 +59,9 @@ stepLMC(struct LMC* comp) {
 			}
 			break;
 		case INP:
-			char input_string[6];
 			printf(": ");
-			gets(input_string);
+			char input_string[6];
+			fgets(input_string, 6, stdin);
 			uint16_t input_num = atoi(input_string);
 			comp->accumulator  = input_num;
 			++(comp->pc);

@@ -30,10 +30,9 @@ main() {
 	//	memcpy(comp.mailboxes, k, sizeof(uint16_t) * 100);
 
 	//	comp.mailboxes = loadProgramFromFile("countdown.lmp");
-	memcpy(
-	    comp.mailboxes,
-	    loadProgramFromFile("countdown_from_asm.lmp"),
-	    sizeof(uint16_t) * 100);
+	uint16_t* lmp = loadProgramFromFile("countdown_from_asm.lmp");
+
+	memcpy(comp.mailboxes, k, sizeof(uint16_t) * 100);
 
 	printf("\n");
 	for(int i = 0; i < 100; ++i) {
